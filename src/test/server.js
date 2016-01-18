@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
 /*
  * Start the server.
  */
-var server = app.listen(3000, "localhost", function () {
+var server = app.listen(4000, "localhost", function () {
     var host = server.address().address;
     var port = server.address().port;
     console.log('Listening at http://%s:%s', host, port);
