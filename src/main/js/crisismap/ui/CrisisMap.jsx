@@ -15,12 +15,9 @@ var {ListGroup, ListGroupItem} = require('react-bootstrap');
 
 var Rater = require('react-rater');
 
-
 var { GoogleMapLoader, GoogleMap, Marker, SearchBox, InfoWindow, Circle } = require('react-google-maps');
 
-
 var canUseDOM = require('can-use-dom');
-var raf = require('raf');
 
 /**
  * Grab the geo-location
@@ -39,32 +36,29 @@ var CrisisMap = React.createClass({
 
     getInitialState: function() {
         return {
-            center: {},
-            radius: 6000,
-            zoom: 10,
+            center: {lat: 26.04, lng: 8.22},
+            radius: 60,
+            zoom: 2,
             infoIndex: -1
         }
     },
 
     componentDidMount: function() {
 
-        geolocation.getCurrentPosition((position) => {
-              this.setState({
-                center: {
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude
-                },
-                content: "Location found using HTML5.",
-              });
-        }, (reason) => {
-          this.setState({
-            center: {
-              lat: -122,
-              lng: 47
-            },
-            content: `Error: The Geolocation service failed (${ reason }).`
-          });
-        });
+//        geolocation.getCurrentPosition((position) => {
+//              this.setState({
+//                center: {
+//                  lat: position.coords.latitude,
+//                  lng: position.coords.longitude
+//                },
+//                content: "Location found using HTML5.",
+//              });
+//        }, (reason) => {
+//          this.setState({
+//
+//            content: `Error: The Geolocation service failed (${ reason }).`
+//          });
+//        });
 
     },
 
@@ -78,11 +72,28 @@ var CrisisMap = React.createClass({
 
     render: function() {
 
-        if(this.props.display) {
-
             const {center, content, radius} = this.state;
 
+            let contents = [];
+
+            const iraqConflict = {lat:36.35, lng: 43.07};
+
+            contents = contents.concat([
+            ( <Marker
+                       defaultPosition={iraqConflict}
+                       title="Iraq Conflict"/>
+            ),
+            (<Circle key="circle" center={iraqConflict} radius={600} options={{
+                fillColor: "red",
+                fillOpacity: 0.50,
+                strokeColor: "red",
+                strokeOpacity: 1,
+                strokeWeight: 1,
+              }} />),
+            ]);
+
             return (
+              <div id="map" className="crisis-map">
                 <GoogleMap containerProps={{
                       ...this.props,
                       style: {
@@ -91,16 +102,13 @@ var CrisisMap = React.createClass({
                     }}
                     ref="map"
                     defaultZoom={this.state.zoom}
-                    defaultCenter={center}
+                    center={center}
                     >
-
+                    {contents}
                 </GoogleMap>
+              </div>
             );
-        } else {
-            return(
-                <div/>
-            )
-        }
+
    }
 });
 

@@ -19,7 +19,7 @@ var Header = React.createClass ({
       <Navbar.Toggle />
     </Navbar.Header>
     <Navbar.Collapse>
-      <Nav pullRight>
+      <Nav>
         <NavItem eventKey={1} href="#">About</NavItem>
         {/*
         <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
